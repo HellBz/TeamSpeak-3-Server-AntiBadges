@@ -16,6 +16,10 @@ Now give the files permissions with:
 ```
 chmod 777 *
 ```
+Navigate to the file:
+```
+cd /antibadges/libraries/TeamSpeak3/
+```
 Open the index.php and edit the "Edit" line.
 Now you can start the bot with: 
 
