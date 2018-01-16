@@ -54,10 +54,10 @@ foreach($t->clientList() as $l) {
                 $t->clientGetByName($l["client_nickname"])->kick(TeamSpeak3::KICK_SERVER, $o);
                 sendlog($l['client_nickname']);
                 sleep(1);
-}
-     }
-   }
-}
+                 }  
+              }
+           }
+       }
     }catch (Exception $x) {
         echo $x;
     }
