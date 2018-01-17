@@ -45,8 +45,12 @@ $bb = array(
     "f81ad44d-e931-47d1-a3ef-5fd160217cf8", // 4Netplayers
     "f22c22f1-8e2d-4d99-8de9-f352dc26ac5b"  // Rocket Beans TV
 );
+try {
 $t = TeamSpeak3::factory($con);
-while (true) {
+}catch (Exception $x) {
+    errlog($x);
+}
+    while (true) {
     try {
         $t->clientListReset();
         foreach($t->clientList() as $l) {
@@ -61,7 +65,7 @@ while (true) {
             }
         }
     } catch (Exception $x) {
-        echo $x;
+         errlog($x);
     }
 }
 
@@ -70,7 +74,12 @@ function sendlog($nickname) {
     $file = fopen($y, "a");
     $dn = "[".date("H:i:s")."]";
     sleep(1);
-    fwrite($file, $dn." Client: ".$nickname." kicked from Server. [AntiBadges]\$
+    fwrite($file, $dn." Client: ".$nickname." kicked from Server. [AntiBadges]\n");
+    fclose($file);
+}
+function errlog($ms) {
+    $file = fopen("err.txt", "a");
+    fwrite($file, $ms."\n");
     fclose($file);
 }
 
