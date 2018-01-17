@@ -24,7 +24,7 @@ $d = "10011"; //queryport                                  |
 $e = "9987"; //serverport                                  |
 $f = "AntiBadges"; //nickname                              |
 $o = "Ouh!, no-no badges not allowed :c"; // kick message  |
-$j = "log.txt"; // log file                                |
+$y = "log.txt"; // log file                                |
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //                          ~ Source ~                     |
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -66,7 +66,11 @@ while (true) {
 }
 
 function sendlog($nickname) {
-    $file = fopen($j, "a");
-    fwrite($file, "Client: ".$nickname." kicked from Server. [AntiBadges]\n");
+    global $y;
+    $file = fopen($y, "a");
+    $dn = "[".date("H:i:s")."]";
+    sleep(1);
+    fwrite($file, $dn." Client: ".$nickname." kicked from Server. [AntiBadges]\$
     fclose($file);
 }
+
