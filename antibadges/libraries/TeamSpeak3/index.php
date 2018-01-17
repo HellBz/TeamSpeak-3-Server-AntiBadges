@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once("TeamSpeak3.php"); //planetteamspeak.com
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //                         ~ Author ~                      |
@@ -18,15 +18,17 @@ require_once("TeamSpeak3.php"); //planetteamspeak.com
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //                         ^    -    ^                     |
 $a = "admin"; //user                                       |
-$b = "Eg1OTjLD"; //pass                                    |
-$c  = "dolo.tv"; //host                                    |
+$b = "EkdmslAs"; //pass                                    |
+$c = "dolo.tv"; //host                                     |
 $d = "10011"; //queryport                                  |
 $e = "9987"; //serverport                                  |
 $f = "AntiBadges"; //nickname                              |
 $o = "Ouh!, no-no badges not allowed :c"; // kick message  |
+$j = "log.txt"; // log file                                |
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //                          ~ Source ~                     |
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+$con = "serverquery://".$a.":".$b."@".$c.":".$d."/?server_port=".$e."&nickname=".$f;
 // http://yat.qa/ressourcen/abzeichen-badges/
 $bb = array(
     "1cb07348-34a4-4741-b50f-c41e584370f7", // TeamSpeak Addon Author
@@ -43,29 +45,28 @@ $bb = array(
     "f81ad44d-e931-47d1-a3ef-5fd160217cf8", // 4Netplayers
     "f22c22f1-8e2d-4d99-8de9-f352dc26ac5b"  // Rocket Beans TV
 );
-$t = TeamSpeak3::factory("serverquery://".$a.":".$b."@".$c.":".$d."/?server_port=".$e."&nickname=".$f);
-while(true) {
+$t = TeamSpeak3::factory($con);
+while (true) {
     try {
-$t->clientListReset();
-foreach($t->clientList() as $l) {
-    if (!$l['client_type'])  {
-        foreach($bb as $badges) {
-            if (strstr($l['client_badges'],$badges)) {
-                $t->clientGetByName($l["client_nickname"])->kick(TeamSpeak3::KICK_SERVER, $o);
-                sendlog($l['client_nickname']);
-                sleep(1);
-                 }  
-              }
-           }
-       }
-    }catch (Exception $x) {
+        $t->clientListReset();
+        foreach($t->clientList() as $l) {
+            if (!$l['client_type']) {
+                foreach($bb as $badges) {
+                    if (strstr($l['client_badges'], $badges)) {
+                        $t->clientGetByName($l["client_nickname"])->kick(TeamSpeak3::KICK_SERVER, $o);
+                        sendlog($l['client_nickname']);
+                        sleep(1);
+                    }
+                }
+            }
+        }
+    } catch (Exception $x) {
         echo $x;
     }
 }
+
 function sendlog($nickname) {
-   $file = fopen("log.txt","a");
-    fwrite($file,"Client: ".$nickname." kicked from Server. [AntiBadges]\n");
+    $file = fopen($j, "a");
+    fwrite($file, "Client: ".$nickname." kicked from Server. [AntiBadges]\n");
     fclose($file);
 }
-
-
